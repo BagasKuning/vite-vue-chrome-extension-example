@@ -1,33 +1,27 @@
-<script>
-import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
+<script setup>
+import { ref, reactive, onMounted } from "vue";
 
-export default defineComponent({
-  setup() {
-    const visible = ref(false);
-
-    const state = reactive({
-      currentTab: null
-    });
-
-    onMounted(() => {
-      chrome.runtime.sendMessage({ type: "POPUP_INIT" }, async tab => {
-        state.currentTab = await tab;
-        console.log(state.currentTab);
-      });
-    });
-
-    return {
-      visible,
-      ...toRefs(state)
-    };
-  }
+const visible = ref(false);
+const state = reactive({
+  currentTab: null
 });
+
+onMounted(() => {
+  chrome.runtime.sendMessage({ type: "POPUP_INIT" }, async tab => {
+    state.currentTab = await tab;
+    console.log(state.currentTab);
+  });
+});
+
+const changeColor = color => {
+  chrome.runtime.sendMessage({ type: "CHANGE_COLOR", color });
+};
 </script>
 <template>
   <div class="overlay" v-show="visible">
-    <!-- <div class="overlay"> -->
     <div class="popup">
-      <h1>Legen...wait for it..dary</h1>
+      <h1>Automation Extension</h1>
+      <button @click="changeColor('#ff5733')">change color</button>
       <pre>{{ currentTab }}</pre>
     </div>
   </div>
@@ -35,7 +29,7 @@ export default defineComponent({
 
 <style>
 .overlay {
-  @apply fixed inset-0 w-full h-full bg-black bg-opacity-10 z-50;
+  @apply fixed inset-0 w-full h-full bg-black bg-opacity-30 z-50;
 }
 
 .popup {

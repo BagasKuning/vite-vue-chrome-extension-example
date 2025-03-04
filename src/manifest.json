@@ -25,10 +25,13 @@
             ],
             "js": [
                 "content-scripts/main.js"
-            ]
+            ],
+            "run_at": "document_idle"
         }
     ],
     "permissions": [
-        "tabs"
+        "tabs",
+        "activeTab",
+        "scripting"
     ]
 }

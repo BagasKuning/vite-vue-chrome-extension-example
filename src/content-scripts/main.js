@@ -13,8 +13,11 @@ mountEl.setAttribute("id", MOUNT_EL_ID);
 document.body.appendChild(mountEl);
 
 const vm = createApp(Popup).mount(mountEl);
+console.log("✅ Content script is running!");
 
 chrome.runtime.onMessage.addListener(message => {
+  console.log("message from background", message);
+
   console.log({ message });
   if (message.toggleVisible) {
     vm.visible = !vm.visible;
